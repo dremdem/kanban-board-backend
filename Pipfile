@@ -9,6 +9,8 @@ verify_ssl = true
 sqlalchemy = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
+flask = "*"
+flask-restful = "*"
 
 [requires]
 python_version = "3.8"

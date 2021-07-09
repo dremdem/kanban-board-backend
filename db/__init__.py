@@ -15,7 +15,7 @@ dotenv.load_dotenv("db/postgres_config.env")
 POSTGRES_CONN_STR = f"postgresql+psycopg2://" \
                     f"{os.environ.get('POSTGRES_USER')}:" \
                     f"{os.environ.get('POSTGRES_PASSWORD')}@" \
-                    f"test_db/{os.environ.get('POSTGRES_DB')}"
+                    f"{os.environ.get('POSTGRES_HOST')}/{os.environ.get('POSTGRES_DB')}"
 engine = sqlal.create_engine(POSTGRES_CONN_STR,
                              isolation_level="SERIALIZABLE")
 Base = sqlorm.declarative_base()

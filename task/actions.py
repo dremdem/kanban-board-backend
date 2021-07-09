@@ -8,12 +8,14 @@ import task.actions as actions
 
 import datetime as dt
 import decimal
+import http
 from typing import List, Dict
 
-import sqlalchemy.orm.exc as sqlexc
+import sqlalchemy.orm.exc as sqlexc_orm
 import sqlalchemy.orm as sqlorm
-
+import sqlalchemy.exc as sqlexc
 import db
+import task.exceptions as tskexc
 import task.models as models
 import task.utils as utils
 
@@ -52,10 +54,16 @@ def add_task(name: str) -> None:
     """
     with sqlorm.Session(db.engine) as session:
         if not validate_task_name(name):
-            Exception("Task name %s is not valid." % name)
+            raise tskexc.TaskHTTPException(http.HTTPStatus.BAD_REQUEST,
+                                           "Task name %s is not valid." % name)
         new_task = models.Task(name=name, status=models.TaskStatus.todo)
         session.add(new_task)
-        session.commit()
+        try:
+            session.commit()
+        except sqlexc.IntegrityError:
+            raise tskexc.TaskHTTPException(
+                http.HTTPStatus.CONFLICT,
+                f"Task with the {name} name already exists.")
 
 
 def start_task(name: str) -> None:
@@ -68,7 +76,7 @@ def start_task(name: str) -> None:
         try:
             task = session.query(models.Task). \
                 filter(models.Task.name == name).one()
-        except sqlexc.NoResultFound:
+        except sqlexc_orm.NoResultFound:
             raise Exception("There is no task: %s", name)
         if task.status != models.TaskStatus.todo:
             raise Exception("Task: %s is not on the todo tab.")
