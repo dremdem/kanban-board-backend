@@ -1,9 +1,19 @@
+"""New task function handler module."""
+
 import json
 import logging
+
 import task.actions as actions
 
 
-def new_task(event, context):
+def new_task(event: dict, context) -> dict:
+    """
+    New task handler.
+
+    :param event: All incoming info for an AWS Lambda function.
+    :param context:
+    :return: Dict with the response.
+    """
     data = json.loads(event['body'])
     if 'name' not in data:
         logging.error("Validation Failed")

@@ -1,9 +1,19 @@
+"""Get tasks handler module."""
+
 import json
 import logging
+
 import task.actions as actions
 
 
 def get_tasks(event, context):
+    """
+    Get tasks handler.
+
+    :param event: All incoming info for an AWS Lambda function.
+    :param context:
+    :return: Dict with the response.
+    """
     data = json.loads(event['body'])
     if 'name' not in data:
         logging.error("Validation Failed")

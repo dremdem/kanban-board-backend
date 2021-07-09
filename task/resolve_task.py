@@ -1,9 +1,19 @@
+"""Resolve task handler module."""
+
 import json
 import logging
+
 import task.actions as actions
 
 
 def resolve_task(event, context):
+    """
+    Resolve task handler.
+
+    :param event: All incoming info for an AWS Lambda function.
+    :param context:
+    :return: Dict with the response.
+    """
     data = json.loads(event['body'])
     if 'name' not in data:
         logging.error("Validation Failed")
@@ -18,6 +28,13 @@ def resolve_task(event, context):
 
 
 def get_cost(event, context):
+    """
+    Get cost for task handler.
+
+    :param event: All incoming info for an AWS Lambda function.
+    :param context:
+    :return: Dict with the response.
+    """
     data = json.loads(event['body'])
     if 'name' not in data:
         logging.error("Validation Failed")
