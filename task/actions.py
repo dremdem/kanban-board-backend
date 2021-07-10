@@ -131,10 +131,14 @@ def get_elapsed_time(name: str) -> str:
         try:
             task = session.query(models.Task). \
                 filter(models.Task.name == name).one()
-        except sqlexc.NoResultFound:
-            raise Exception("There is no task: %s", name)
+        except sqlexc_orm.NoResultFound:
+            raise tskexc.TaskHTTPException(
+                http.HTTPStatus.NOT_FOUND,
+                f"There is no task: {name}")
         if task.status != models.TaskStatus.in_progress:
-            raise Exception("Task: %s is not in progress.")
+            raise tskexc.TaskHTTPException(
+                http.HTTPStatus.CONFLICT,
+                f"Task: {name} is not in progress.")
         delta = get_time_delta(task)
         return utils.get_time_by_delta(delta)
 

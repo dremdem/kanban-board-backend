@@ -8,6 +8,12 @@ import task.exceptions as tskexc
 
 
 def start_task(data: dict) -> dict:
+    """
+    Start a task.
+
+    :param data: Dictionary with the task name inside.
+    :return: Dictionary with a HTTP status code and a message.
+    """
     status_code = http.HTTPStatus.OK
     body = {}
     if not data.get('name'):
@@ -37,7 +43,31 @@ def start_task_handler(event, context):
     return start_task(data)
 
 
-def get_elapsed_time(event, context):
+def get_elapsed_time(data: dict) -> dict:
+    """
+    Get elapsed time for a task.
+
+    :param data: Dictionary with the task name inside.
+    :return: Dictionary with a HTTP status code and a message.
+    """
+    status_code = http.HTTPStatus.OK
+    body = {}
+    if not data.get('name'):
+        error_text = "Task name not entered."
+        logging.error(error_text)
+        status_code = http.HTTPStatus.BAD_REQUEST
+        body = {"error": error_text}
+    else:
+        try:
+            elapsed_time = actions.get_elapsed_time(data['name'])
+            body["message"] = {"time": elapsed_time}
+        except tskexc.TaskHTTPException as e:
+            body = {"error": e.message}
+            status_code = e.http_status
+    return {"statusCode": status_code, "body": json.dumps(body)}
+
+
+def get_elapsed_handler(event, context):
     """
     Get elapsed_time for a task handler.
 
@@ -46,13 +76,4 @@ def get_elapsed_time(event, context):
     :return: Dict with the response.
     """
     data = json.loads(event['body'])
-    if 'name' not in data:
-        logging.error("Validation Failed")
-        raise Exception("Couldn't start the todo item.")
-    print(data["name"])
-    elapsed_time = actions.get_elapsed_time(data['name'])
-    body = {
-        "message": {"time": elapsed_time},
-    }
-    response = {"statusCode": 200, "body": json.dumps(body)}
-    return response
+    return get_elapsed_time(data)

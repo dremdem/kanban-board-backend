@@ -33,5 +33,15 @@ class StartTask(Resource):
 
 api.add_resource(StartTask, '/start')
 
+
+class GetElapsedTime(Resource):
+    def post(self):
+        args = task_name_parser.parse_args()
+        response = start_task.get_elapsed_time(args)
+        return response['body'], response['statusCode']
+
+
+api.add_resource(GetElapsedTime, '/get_elapsed_time')
+
 if __name__ == '__main__':
     app.run(debug=True)
