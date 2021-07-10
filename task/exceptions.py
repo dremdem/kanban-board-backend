@@ -1,7 +1,7 @@
 import http
 
 
-class TaskHTTPException(Exception):
+class TaskHTTPException(BaseException):
     def __init__(self, http_status: http.HTTPStatus, message):
         self.http_status = http_status
         self.message = message

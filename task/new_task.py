@@ -8,9 +8,15 @@ import task.exceptions as tskexc
 
 
 def new_task(data: dict) -> dict:
+    """
+    Adding the new task.
+
+    :param data: Dictionary with the task name inside.
+    :return: Dictionary with a HTTP status code and a message.
+    """
     status_code = http.HTTPStatus.CREATED
     body = {}
-    if 'name' not in data:
+    if not data.get('name'):
         error_text = "Task name not entered."
         logging.error(error_text)
         status_code = http.HTTPStatus.BAD_REQUEST

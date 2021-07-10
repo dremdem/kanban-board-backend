@@ -77,9 +77,13 @@ def start_task(name: str) -> None:
             task = session.query(models.Task). \
                 filter(models.Task.name == name).one()
         except sqlexc_orm.NoResultFound:
-            raise Exception("There is no task: %s", name)
+            raise tskexc.TaskHTTPException(
+                http.HTTPStatus.NOT_FOUND,
+                f"There is no task: {name}")
         if task.status != models.TaskStatus.todo:
-            raise Exception("Task: %s is not on the todo tab.")
+            raise tskexc.TaskHTTPException(
+                http.HTTPStatus.CONFLICT,
+                f"Task: {name} is not on the todo tab.")
         task.status = models.TaskStatus.in_progress
         task.start_datetime = dt.datetime.now()
         session.commit()
