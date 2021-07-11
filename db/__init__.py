@@ -11,7 +11,9 @@ import dotenv
 import sqlalchemy as sqlal
 import sqlalchemy.orm as sqlorm
 
-dotenv.load_dotenv("db/postgres_config.env")
+KANBAN_BOARD_STAGE = os.environ.get('KANBAN_BOARD_STAGE', 'prod')
+dotenv.load_dotenv(os.path.join(os.path.dirname(__file__),
+                                f"{KANBAN_BOARD_STAGE}_postgres_config.env"))
 POSTGRES_CONN_STR = f"postgresql+psycopg2://" \
                     f"{os.environ.get('POSTGRES_USER')}:" \
                     f"{os.environ.get('POSTGRES_PASSWORD')}@" \

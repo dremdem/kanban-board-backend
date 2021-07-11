@@ -11,6 +11,8 @@ python-dotenv = "*"
 psycopg2-binary = "*"
 flask = "*"
 flask-restful = "*"
+pytest = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"
