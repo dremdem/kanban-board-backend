@@ -1,0 +1,267 @@
+---
+openapi: 3.0.1
+info:
+  title: kanban-board-restapi
+  description: kanban-board-restapi
+  version: "0.2"
+servers:
+- url: http://localhost:5000
+paths:
+  /get_elapsed_time:
+    post:
+      description: Get elapsed time for a task
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task_name'
+            examples:
+              "0":
+                value: '{"name": "test2"}'
+      responses:
+        "200":
+          description: Elapsed time retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/elapsed_time_response'
+              examples:
+                "0":
+                  value: |
+                    {
+                        "message": {
+                            "time": "00:08:45"
+                        }
+                    }
+      servers:
+      - url: http://localhost:5000
+    servers:
+    - url: http://localhost:5000
+  /resolve_task:
+    post:
+      description: Resolve a given task
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task_name'
+            examples:
+              "0":
+                value: '{"name": "test2"}'
+      responses:
+        "200":
+          description: Task resolved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ok_response'
+              examples:
+                "0":
+                  value: |
+                    {
+                        "message": "Task test2 resolved."
+                    }
+      servers:
+      - url: http://localhost:5000
+    servers:
+    - url: http://localhost:5000
+  /new:
+    post:
+      description: Create a new task
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task_name'
+            examples:
+              "0":
+                value: '{"name": "test2"}'
+      responses:
+        "201":
+          description: Succesfully created task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ok_response'
+              examples:
+                "0":
+                  value: |
+                    {
+                        "message": "Task test2 added."
+                    }
+      servers:
+      - url: http://localhost:5000
+    servers:
+    - url: http://localhost:5000
+  /get_tasks:
+    post:
+      description: Get tasks by a filter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/filters'
+            examples:
+              "0":
+                value: '{"status": "done"}'
+      responses:
+        "200":
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task_list'
+              examples:
+                "0":
+                  value: |
+                    {
+                        "filters": {
+                            "status": "done"
+                        },
+                        "tasks": [
+                            {
+                                "name": "test1",
+                                "status": "done",
+                                "start_datetime": "2021-07-12T00:55:00.335086",
+                                "elapsed_time": "00:00:00",
+                                "end_datetime": "2021-07-12T00:55:00.362944",
+                                "cost": "0.00"
+                            },
+                            {
+                                "name": "test2",
+                                "status": "done",
+                                "start_datetime": "2021-07-12T01:27:49.255237",
+                                "elapsed_time": "00:09:33",
+                                "end_datetime": "2021-07-12T01:37:22.458046",
+                                "cost": "1.59"
+                            }
+                        ]
+                    }
+      servers:
+      - url: http://localhost:5000
+    servers:
+    - url: http://localhost:5000
+  /start:
+    post:
+      description: Start task
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task_name'
+            examples:
+              "0":
+                value: '{"name": "test2"}'
+      responses:
+        "200":
+          description: Task started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ok_response'
+              examples:
+                "0":
+                  value: |
+                    {
+                        "message": "Task test2 started."
+                    }
+      servers:
+      - url: http://localhost:5000
+    servers:
+    - url: http://localhost:5000
+  /get_cost:
+    post:
+      description: Get cost for a task
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task_name'
+            examples:
+              "0":
+                value: '{"name": "test2"}'
+      responses:
+        "200":
+          description: Cost for a task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cost_response'
+              examples:
+                "0":
+                  value: |
+                    {
+                        "message": {
+                            "cost": "$1.59"
+                        }
+                    }
+      servers:
+      - url: http://localhost:5000
+    servers:
+    - url: http://localhost:5000
+components:
+  schemas:
+    task_name:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+    elapsed_time_response:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            time:
+              type: string
+    ok_response:
+      type: object
+      properties:
+        message:
+          type: string
+    filters:
+      type: object
+      properties:
+        status:
+          type: string
+        name:
+          type: string
+        start_datetime:
+          type: string
+        end_datetime:
+          type: string
+    task_list:
+      type: object
+      properties:
+        filters:
+          type: object
+          properties:
+            status:
+              type: string
+        tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              cost:
+                type: string
+              start_datetime:
+                type: string
+              end_datetime:
+                type: string
+              name:
+                type: string
+              elapsed_time:
+                type: string
+              status:
+                type: string
+    cost_response:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            cost:
+              type: string
