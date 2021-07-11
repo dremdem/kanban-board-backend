@@ -112,7 +112,18 @@ def resolve_task(name: str) -> None:
         session.commit()
 
 
-def get_time_delta(task: models.Task) -> dt.timedelta:
+def get_time_delta_for_resolved_task(task: models.Task) -> dt.timedelta:
+    """
+    Calculate the delta for a task between start and end tasks time.
+
+    :param task: Task name.
+    :return: Datetime delta.
+    """
+
+    return task.end_datetime - task.start_datetime
+
+
+def get_time_delta_for_in_progress_task(task: models.Task) -> dt.timedelta:
     """
     Calculate the delta between task start time
      and the current time.
@@ -143,7 +154,7 @@ def get_elapsed_time(name: str) -> str:
             raise tskexc.TaskHTTPException(
                 http.HTTPStatus.CONFLICT,
                 f"Task: {name} is not in progress.")
-        delta = get_time_delta(task)
+        delta = get_time_delta_for_in_progress_task(task)
         return utils.get_time_by_delta(delta)
 
 
@@ -158,11 +169,15 @@ def get_cost(name: str) -> decimal.Decimal:
         try:
             task = session.query(models.Task). \
                 filter(models.Task.name == name).one()
-        except sqlexc.NoResultFound:
-            raise Exception("There is no task: %s", name)
+        except sqlexc_orm.NoResultFound:
+            raise tskexc.TaskHTTPException(
+                http.HTTPStatus.NOT_FOUND,
+                f"There is no task: {name}")
         if task.status != models.TaskStatus.done:
-            raise Exception("Task: %s is not done.")
-        delta = get_time_delta(task)
+            raise tskexc.TaskHTTPException(
+                http.HTTPStatus.CONFLICT,
+                f"Task: {name} is not done")
+        delta = get_time_delta_for_resolved_task(task)
         return utils.get_cost_by_delta(delta)
 
 

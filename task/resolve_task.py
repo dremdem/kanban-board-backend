@@ -43,7 +43,31 @@ def resolve_task_handler(event, context):
     return resolve_task(data)
 
 
-def get_cost(event, context):
+def get_cost(data: dict) -> dict:
+    """
+    Calculate the cost with the task name.
+
+    :param data: Dictionary with the task name inside.
+    :return: Dictionary with an HTTP status code and a message.
+    """
+    status_code = http.HTTPStatus.OK
+    body = {}
+    if not data.get('name'):
+        error_text = "Task name not entered."
+        logging.error(error_text)
+        status_code = http.HTTPStatus.BAD_REQUEST
+        body = {"error": error_text}
+    else:
+        try:
+            cost = actions.get_cost(data['name'])
+            body["message"] = {"cost": f"${cost}"}
+        except tskexc.TaskHTTPException as e:
+            body = {"error": e.message}
+            status_code = e.http_status
+    return {"statusCode": status_code, "body": json.dumps(body)}
+
+
+def get_cost_handler(event, context):
     """
     Get cost for task handler.
 

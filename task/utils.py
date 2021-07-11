@@ -34,5 +34,5 @@ def get_cost_by_delta(delta: dt.timedelta) -> decimal.Decimal:
     :return: Cost as Decimal.
     """
     hours = delta.seconds / 60 / 60
-    decimal.getcontext().prec = 3
-    return decimal.Decimal(hours) * decimal.Decimal(const.HOURLY_RATE)
+    return round(decimal.Decimal(hours) *
+                 decimal.Decimal(const.HOURLY_RATE), 2)

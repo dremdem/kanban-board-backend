@@ -55,5 +55,15 @@ class ResolveTask(Resource):
 
 api.add_resource(ResolveTask, '/resolve_task')
 
+
+class GetCost(Resource):
+    def post(self):
+        args = task_name_parser.parse_args()
+        response = resolve_task.get_cost(args)
+        return json.loads(response['body']), response['statusCode']
+
+
+api.add_resource(GetCost, '/get_cost')
+
 if __name__ == '__main__':
     app.run(debug=True)
