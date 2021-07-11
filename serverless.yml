@@ -15,37 +15,37 @@ provider:
 
 functions:
   new:
-    handler: task/new_task.new_task
+    handler: task/new_task.new_task_handler
     events:
       - http:
           path: new
           method: post
   start:
-    handler: task/start_task.start_task
+    handler: task/start_task.start_task_handler
     events:
       - http:
           path: start
           method: post
   get_elapsed_time:
-    handler: task/start_task.get_elapsed_time
+    handler: task/start_task.get_elapsed_time_handler
     events:
       - http:
           path: get_elapsed_time
           method: post
   resolve:
-    handler: task/resolve_task.resolve_task
+    handler: task/resolve_task.resolve_task_handler
     events:
       - http:
           path: resolve
           method: post
   get_cost:
-    handler: task/resolve_task.get_cost
+    handler: task/resolve_task.get_cost_handler
     events:
       - http:
           path: get_cost
           method: post
   get_tasks:
-    handler: task/tasks.get_tasks
+    handler: task/tasks.get_tasks_handler
     events:
       - http:
           path: tasks
