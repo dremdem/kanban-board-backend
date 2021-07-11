@@ -193,7 +193,9 @@ def get_tasks(filters: dict) -> List[models.Task]:
     :return:
     """
     if not validate_filters(filters):
-        raise Exception("Filters validation failed.")
+        raise tskexc.TaskHTTPException(
+            http.HTTPStatus.BAD_REQUEST,
+            "Filters validation failed.")
     with sqlorm.Session(db.engine) as session:
         # RFE(*): Have to handle partially entered dates like "2021-07-09"
         return session.query(models.Task).filter_by(**filters)

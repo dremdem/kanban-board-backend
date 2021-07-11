@@ -31,7 +31,7 @@ def resolve_task(data: dict) -> dict:
     return {"statusCode": status_code, "body": json.dumps(body)}
 
 
-def resolve_task_handler(event, context):
+def resolve_task_handler(event, context) -> dict:
     """
     Resolve task handler.
 
@@ -67,7 +67,7 @@ def get_cost(data: dict) -> dict:
     return {"statusCode": status_code, "body": json.dumps(body)}
 
 
-def get_cost_handler(event, context):
+def get_cost_handler(event, context) -> dict:
     """
     Get cost for task handler.
 
