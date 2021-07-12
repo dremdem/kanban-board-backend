@@ -1,3 +1,3 @@
-SQLAlchemy
+sqlalchemy
 python-dotenv
 aws-psycopg2
