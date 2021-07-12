@@ -35,7 +35,7 @@ def test_get_elapsed_time():
 
 @pytest.mark.order(4)
 def test_resolve():
-    response = requests.post(f"{BASE_URL}/resolve_task", json={"name": "test1"})
+    response = requests.post(f"{BASE_URL}/resolve", json={"name": "test1"})
     assert response.status_code == 200
 
 
@@ -47,5 +47,5 @@ def test_get_cost():
 
 @pytest.mark.order(6)
 def test_get_tasks():
-    response = requests.post(f"{BASE_URL}/get_tasks", json={"name": "test1"})
+    response = requests.post(f"{BASE_URL}/tasks", json={"name": "test1"})
     assert response.status_code == 200

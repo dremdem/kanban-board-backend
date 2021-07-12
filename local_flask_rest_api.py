@@ -60,7 +60,7 @@ class ResolveTask(Resource):
         return json.loads(response['body']), response['statusCode']
 
 
-api.add_resource(ResolveTask, '/resolve_task')
+api.add_resource(ResolveTask, '/resolve')
 
 
 class GetCost(Resource):
@@ -80,7 +80,7 @@ class GetTasks(Resource):
         return json.loads(response['body']), response['statusCode']
 
 
-api.add_resource(GetTasks, '/get_tasks')
+api.add_resource(GetTasks, '/tasks')
 
 if __name__ == '__main__':
     app.run(debug=True)
