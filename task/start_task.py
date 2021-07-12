@@ -67,7 +67,7 @@ def get_elapsed_time(data: dict) -> dict:
     return {"statusCode": status_code, "body": json.dumps(body)}
 
 
-def get_elapsed_handler(event, context):
+def get_elapsed_time_handler(event, context) -> dict:
     """
     Get elapsed_time for a task handler.
 

@@ -13,6 +13,7 @@ flask = "*"
 flask-restful = "*"
 pytest = "*"
 requests = "*"
+pytest-order = "*"
 
 [requires]
 python_version = "3.8"
