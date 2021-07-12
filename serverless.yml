@@ -53,6 +53,9 @@ functions:
       - http:
           path: tasks
           method: post
+plugins:
+  - serverless-python-requirements
+
 custom:
   pythonRequirements:
     dockerizePip: true
