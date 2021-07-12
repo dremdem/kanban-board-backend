@@ -13,6 +13,9 @@ provider:
   stage: dev
   region: eu-central-1
 
+  environment:
+    KANBAN_BOARD_STAGE: 'prod'
+
 functions:
   new:
     handler: task/new_task.new_task_handler
